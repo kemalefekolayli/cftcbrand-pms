@@ -3,6 +3,7 @@ package com.example.cftcbrandtech.User.Service;
 
 import com.example.cftcbrandtech.Exceptions.ErrorCodes;
 import com.example.cftcbrandtech.Exceptions.GlobalException;
+import com.example.cftcbrandtech.User.Dto.UserLoginDto;
 import com.example.cftcbrandtech.User.Dto.UserRegisDto;
 import com.example.cftcbrandtech.User.Mapper.UserModelMapper;
 import com.example.cftcbrandtech.User.UserModel;
@@ -24,5 +25,15 @@ public class UserModelService {
         UserModel userModel = userModelMapper.RegisterUserFromDto(dto);
         userModelRepository.save(userModel);
         return true;
+    }
+
+    public UserModel LoginUser(UserLoginDto dto){
+        UserModel userToLogin = userModelRepository.findByEmail(dto.getEmail()).orElseThrow(()->new GlobalException(ErrorCodes.AUTH_USER_NOT_FOUND));
+        if(userToLogin.getPassword().equals(dto.getPassword())){
+            return userToLogin;
+        }
+        else {
+            throw new GlobalException(ErrorCodes.AUTH_INVALID_CREDENTIALS); // different errors for mail and password might cause security issues
+        }
     }
 }
