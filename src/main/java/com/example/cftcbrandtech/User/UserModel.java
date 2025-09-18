@@ -40,5 +40,8 @@ public class UserModel {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Column(name = "isActive")
+    private boolean isActive = true;
+
     // TODO ADD MANYTOONE RESERVATION AS USER RESERVATION JOIN TABLE
 }
