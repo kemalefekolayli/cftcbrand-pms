@@ -1,21 +1,16 @@
-// Property.java (Multi-Villa Support)
-package io.villapms.villapms.model.Property;
+
+package com.example.cftcbrandtech.Property;
 
 import com.example.cftcbrandtech.Property.PropertyPaymentInfo;
-import io.villapms.villapms.model.Booking.Booking;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "property")
 @Data
-public class Property {
+public class PropertyModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
