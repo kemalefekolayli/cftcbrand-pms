@@ -1,6 +1,8 @@
 package com.example.cftcbrandtech.User;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,11 @@ public class UserModel {
 
     @Column(nullable = false, length = 255) // TODO: FOR NOW WE WILL HAVE A PASSWORD BUT EVENTUALLY WE WILL MOVE TO A PASSWORDLESS ENVIROMENT
     private String password;
+
+
+    @Column(nullable = false, length = 255)
+    @Pattern(regexp = "^[0-9]{10,11}$", message = "Phone number should be 10-11 digits")
+    private String phoneNumber;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     @CreationTimestamp
