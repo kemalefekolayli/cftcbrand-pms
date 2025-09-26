@@ -107,18 +107,6 @@ public class ReservationController {
         return ResponseEntity.ok(reservations);
     }
 
-    @GetMapping("/status/{status}")
-    public ResponseEntity<List<ReservationResponseDto>> getReservationsByStatus(
-            @RequestHeader("Authorization") String token,
-            @PathVariable ReservationStatus status) {
-
-        UserModel currentUser = jwtHelper.getUserFromToken(token.substring(7));
-        log.info("User {} fetching reservations with status {}", currentUser.getEmail(), status);
-
-        List<ReservationResponseDto> reservations = reservationService.getReservationsByStatus(status);
-        return ResponseEntity.ok(reservations);
-    }
-
     @GetMapping("/availability")
     public ResponseEntity<List<ReservationResponseDto>> checkAvailability(
             @RequestHeader("Authorization") String token,
