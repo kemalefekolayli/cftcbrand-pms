@@ -1,0 +1,112 @@
+### 1. User Registration Test
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "phoneNumber": "1234567890",
+  "password": "password123"
+}
+
+### 2. User Login Test
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+### 3. User Registration Test - Second User
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "email": "jane@example.com",
+  "phoneNumber": "9876543210",
+  "password": "password456"
+}
+
+### 4. Get All Users (Token Required)
+GET http://localhost:8080/api/users
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
+
+### 5. Get User by ID (Token Required)
+GET http://localhost:8080/api/users/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
+
+
+### 6. Update User (Token Required)
+PUT http://localhost:8080/api/users/1
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
+Content-Type: application/json
+
+{
+  "firstName": "John Updated",
+  "lastName": "Doe Updated",
+  "password": "newpassword123"
+}
+
+### 7. Create Reservation (Token Required)
+POST http://localhost:8080/api/reservations
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "phoneNumber": "1234567890",
+  "tcKimlikNo": "12345678901",
+  "propertyId": 1,
+  "startTime": "2025-10-01T15:00:00",
+  "endTime": "2025-10-03T11:00:00",
+  "totalPrice": 500.0,
+  "notes": "Test reservation"
+}
+
+### 8. Get All Reservations (Token Required)
+GET http://localhost:8080/api/reservations
+Authorization: Bearer {{auth_token}}
+
+### 9. Get Reservations by Property ID (Token Required)
+GET http://localhost:8080/api/reservations/property/1
+Authorization: Bearer {{auth_token}}
+
+### 10. Get User's Own Reservations (Token Required)
+GET http://localhost:8080/api/reservations/user?email=john@example.com
+Authorization: Bearer {{auth_token}}
+
+### 11. Update Reservation (Token Required)
+PUT http://localhost:8080/api/reservations/1
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "firstName": "John Updated",
+  "lastName": "Doe Updated",
+  "startTime": "2025-10-02T15:00:00",
+  "endTime": "2025-10-04T11:00:00",
+  "totalPrice": 600.0,
+  "notes": "Updated reservation"
+}
+
+### 12. Cancel Reservation (Token Required)
+PATCH http://localhost:8080/api/reservations/1/cancel
+Authorization: Bearer {{auth_token}}
+
+### 13. Confirm Reservation (Token Required)
+PATCH http://localhost:8080/api/reservations/1/confirm
+Authorization: Bearer {{auth_token}}
+
+### 14. Check Availability (Token Required)
+GET http://localhost:8080/api/reservations/availability?propertyId=1&startDate=2025-10-01T15:00:00&endDate=2025-10-03T11:00:00
+Authorization: Bearer {{auth_token}}
+
+### 15. Delete Reservation (Token Required)
+DELETE http://localhost:8080/api/reservations/1
+Authorization: Bearer {{auth_token}}

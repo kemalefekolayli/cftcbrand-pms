@@ -1,7 +1,5 @@
-
 package com.example.cftcbrandtech.Property;
 
-import com.example.cftcbrandtech.Property.PropertyPaymentInfo;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -52,9 +50,8 @@ public class PropertyModel {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany
-    @JoinColumn(name = "property_payment_info", nullable = true) // todo şimdilik nullable
+    // Fixed: Changed from @OneToMany to @ManyToOne since it's a single payment info
+    @ManyToOne
+    @JoinColumn(name = "property_payment_info_id", nullable = true) // todo şimdilik nullable
     private PropertyPaymentInfo propertyPaymentInfo;
-
-
 }

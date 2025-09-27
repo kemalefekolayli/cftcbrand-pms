@@ -24,17 +24,17 @@ public class ReservationModel {
     @Column(nullable = false, length = 255)
     private String lastName;
 
-    @Column(nullable = false, unique = true, length = 255)
-    private String email;
+    @Column(nullable = false, length = 255)
+    private String email; // Removed unique constraint
 
     @Column(nullable = false, length = 255)
     private String phoneNumber;
 
-    @Column(nullable = false, unique = true, length = 255)
-    private String tcKimlikNo;
+    @Column(nullable = false, length = 255)
+    private String tcKimlikNo; // Removed unique constraint
 
     @Column(name = "property_id", nullable = false)
-    private Long propertyId; // Placeholder for property - will be replaced with actual Property entity later
+    private Long propertyId;
 
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
