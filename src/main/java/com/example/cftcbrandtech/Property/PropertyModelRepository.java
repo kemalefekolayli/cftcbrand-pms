@@ -1,4 +1,6 @@
 package com.example.cftcbrandtech.Property;
 
-public interface PropertyModelRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PropertyModelRepository extends JpaRepository<PropertyModel, Long> {
 }

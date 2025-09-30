@@ -25,13 +25,13 @@ public class ReservationModel {
     private String lastName;
 
     @Column(nullable = false, length = 255)
-    private String email; // Removed unique constraint
+    private String email;
 
     @Column(nullable = false, length = 255)
     private String phoneNumber;
 
     @Column(nullable = false, length = 255)
-    private String tcKimlikNo; // Removed unique constraint
+    private String tcKimlikNo;
 
     @Column(name = "property_id", nullable = false)
     private Long propertyId;

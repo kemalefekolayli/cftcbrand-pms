@@ -1,4 +1,4 @@
-package com.example.cftcbrandtech.Property;
+package com.example.cftcbrandtech.Property.PropertyPaymentInfo;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

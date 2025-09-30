@@ -1,5 +1,8 @@
 package com.example.cftcbrandtech.Property;
 
+import com.example.cftcbrandtech.Property.LocationModel.LocationInfo;
+import com.example.cftcbrandtech.Property.PropertyInfo.PropertyInfo;
+import com.example.cftcbrandtech.Property.PropertyPaymentInfo.PropertyPaymentInfo;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,12 +17,6 @@ public class PropertyModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "location_id", nullable = false)
-    private Long locationId;
-
-    @Column(name = "property_address", nullable = false)
-    private String propertyAddress;
-
     @Column(nullable = false)
     private String name;
 
@@ -27,31 +24,23 @@ public class PropertyModel {
     private String description;
 
     @Column(name = "total_villas", nullable = false)
-    private Integer totalVillas = 1; // Default: tek villa
+    private Integer totalVillas = 1;
 
-    @Column(name = "villa_type")
-    private String villaType;
+    @ManyToOne
+    @JoinColumn(name = "property_info_id")
+    private PropertyInfo propertyInfo;
 
-    @Column(nullable = false)
-    private Integer size;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private LocationInfo location;
 
-    @Column(name = "bed_num", nullable = false)
-    private Integer bedNum; // Her villa'daki yatak sayısı
-
-    @Column(name = "person_size", nullable = false)
-    private Integer personSize; // Her villa'nın max kapasitesi
-
-    @Column(name = "animals_allowed")
-    private Boolean animalsAllowed;
+    @ManyToOne
+    @JoinColumn(name = "property_payment_info_id")
+    private PropertyPaymentInfo propertyPaymentInfo;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    // Fixed: Changed from @OneToMany to @ManyToOne since it's a single payment info
-    @ManyToOne
-    @JoinColumn(name = "property_payment_info_id", nullable = true) // todo şimdilik nullable
-    private PropertyPaymentInfo propertyPaymentInfo;
 }
