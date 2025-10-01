@@ -1,6 +1,6 @@
 package com.example.cftcbrandtech.Reservation;
 
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -8,18 +8,21 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
+@Entity
+@Table(name = "reservation_for_given_time")
 @RequiredArgsConstructor
 public class ReservationForGivenTime {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty
-    private Long villaId;
-    @NotEmpty
+    @Column(nullable = false)
+    private Long propertyId;
+    @Column(nullable = false)
     private LocalDateTime startTime;
-    @NotEmpty
+    @Column(nullable = false)
     private LocalDateTime endTime;
-    @NotEmpty
+    @Column(nullable = false)
     private Long reservationId;
 
 
