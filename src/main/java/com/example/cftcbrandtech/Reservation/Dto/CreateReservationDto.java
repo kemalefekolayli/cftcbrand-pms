@@ -1,5 +1,6 @@
 package com.example.cftcbrandtech.Reservation.Dto;
 
+import com.example.cftcbrandtech.DateValidation.ValidDateRange;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
+@ValidDateRange(startField = "startTime", endField = "endTime", message = "End time must be after start time")
 public class CreateReservationDto {
 
     @NotEmpty(message = "First name is required")
@@ -25,7 +27,7 @@ public class CreateReservationDto {
     @Pattern(regexp = "^[0-9]{10,11}$", message = "Phone number should be 10-11 digits")
     private String phoneNumber;
 
-    @NotEmpty(message = "TC Kimlik No is required")
+
     @Pattern(regexp = "^[0-9]{11}$", message = "TC Kimlik No should be exactly 11 digits")
     private String tcKimlikNo;
 
