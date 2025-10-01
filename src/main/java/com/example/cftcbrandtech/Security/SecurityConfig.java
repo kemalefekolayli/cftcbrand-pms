@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/properties/**").permitAll()
                         .requestMatchers("/api/reservations/**").permitAll()
+                        .requestMatchers("/api/availability/**").authenticated()
                         .anyRequest().authenticated()
                 );
         return http.build();

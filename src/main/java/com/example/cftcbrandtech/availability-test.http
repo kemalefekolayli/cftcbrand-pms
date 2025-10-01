@@ -1,0 +1,30 @@
+@token = eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huMkBleGFtcGxlLmNvbSIsInVzZXJJZCI6MSwiZmlyc3ROYW1lIjoiSm9objIiLCJpYXQiOjE3NTkyNDQ5NTcsImV4cCI6MTc1OTMzMTM1N30.oK5-u61tBj68SgOB_JySGbu1BM2pq_E5UdrAAq_ru0CzOPI36fwOrJKuQpAVdJL7
+@propertyId = 1
+
+### 1. Get Monthly Availability (March 2025)
+GET http://localhost:8080/api/availability/property/{{propertyId}}/month?year=2025&month=3
+Authorization: Bearer {{token}}
+
+### 2. Get Monthly Availability (April 2025)
+GET http://localhost:8080/api/availability/property/{{propertyId}}/month?year=2025&month=4
+Authorization: Bearer {{token}}
+
+### 3. Check Availability for Specific Dates
+GET http://localhost:8080/api/availability/property/{{propertyId}}/check?startTime=2025-03-15T14:00:00&endTime=2025-03-20T11:00:00
+Authorization: Bearer {{token}}
+
+### 4. Check Availability - Should be unavailable (overlapping dates)
+GET http://localhost:8080/api/availability/property/{{propertyId}}/check?startTime=2025-03-10T14:00:00&endTime=2025-03-12T11:00:00
+Authorization: Bearer {{token}}
+
+### 5. Get Available Villa Count
+GET http://localhost:8080/api/availability/property/{{propertyId}}/count?startTime=2025-03-25T14:00:00&endTime=2025-03-30T11:00:00
+Authorization: Bearer {{token}}
+
+### 6. Get Monthly Availability - Invalid Month (should fail)
+GET http://localhost:8080/api/availability/property/{{propertyId}}/month?year=2025&month=13
+Authorization: Bearer {{token}}
+
+### 7. Check Future Availability (December 2025)
+GET http://localhost:8080/api/availability/property/{{propertyId}}/month?year=2025&month=12
+Authorization: Bearer {{token}}
