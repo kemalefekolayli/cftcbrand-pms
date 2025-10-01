@@ -1,11 +1,13 @@
+@token = eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huMkBleGFtcGxlLmNvbSIsInVzZXJJZCI6MSwiZmlyc3ROYW1lIjoiSm9objIiLCJpYXQiOjE3NTkyNDQ5NTcsImV4cCI6MTc1OTMzMTM1N30.oK5-u61tBj68SgOB_JySGbu1BM2pq_E5UdrAAq_ru0CzOPI36fwOrJKuQpAVdJL7
+
 ### 1. User Registration Test
 POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-  "firstName": "John",
+  "firstName": "John2",
   "lastName": "Doe",
-  "email": "john@example.com",
+  "email": "john2@example.com",
   "phoneNumber": "1234567890",
   "password": "password123"
 }
@@ -15,98 +17,81 @@ POST http://localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
+  "email": "john2@example.com",
   "password": "password123"
 }
 
-### 3. User Registration Test - Second User
-POST http://localhost:8080/api/users/register
+### 3. Create Property Test
+POST http://localhost:8080/api/properties
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "firstName": "Jane",
-  "lastName": "Smith",
-  "email": "jane@example.com",
-  "phoneNumber": "9876543210",
-  "password": "password456"
+  "name": "Luxury Villa Antalya",
+  "description": "Beautiful villa with sea view in Antalya",
+  "totalVillas": 1,
+  "size": 150,
+  "bedNum": 3,
+  "wcNum": 2,
+  "personCapacity": 6,
+  "alan": 200.5,
+  "animalsAllowed": true,
+  "villaType": "Detached",
+  "locationName": "Antalya Belek",
+  "locationAddress": "Belek Tourism Center",
+  "locationCity": "Antalya",
+  "locationState": "Antalya",
+  "nightlyRate": 500.00,
+  "cleaningFee": 100.00,
+  "securityDeposit": 1000.00,
+  "serviceFeeRate": 0.10,
+  "weekendRate": 600.00,
+  "weeklyDiscount": 0.15,
+  "monthlyDiscount": 0.25,
+  "minNights": 2,
+  "maxNights": 30
 }
 
-### 4. Get All Users (Token Required)
-GET http://localhost:8080/api/users
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
-
-### 5. Get User by ID (Token Required)
-GET http://localhost:8080/api/users/1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
-
-
-### 6. Update User (Token Required)
-PUT http://localhost:8080/api/users/1
-Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
-Content-Type: application/json
-
-{
-  "firstName": "John Updated",
-  "lastName": "Doe Updated",
-  "password": "newpassword123"
-}
-
-### 7. Create Reservation (Token Required)
-POST http://localhost:8080/api/reservations
+### 4. Create Property Test - Minimal Required Fields
+POST http://localhost:8080/api/properties
 Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
 Content-Type: application/json
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john@example.com",
-  "phoneNumber": "1234567890",
-  "tcKimlikNo": "12345678901",
-  "propertyId": 1,
-  "startTime": "2025-10-01T15:00:00",
-  "endTime": "2025-10-03T11:00:00",
-  "totalPrice": 500.0,
-  "notes": "Test reservation"
+  "name": "Cozy Villa Istanbul",
+  "description": "Small villa near Bosphorus",
+  "totalVillas": 1,
+  "size": 80,
+  "bedNum": 2,
+  "wcNum": 1,
+  "personCapacity": 4,
+  "locationName": "Istanbul Besiktas",
+  "nightlyRate": 300.00
 }
 
-### 8. Get All Reservations (Token Required)
-GET http://localhost:8080/api/reservations
-Authorization: Bearer {{auth_token}}
-
-### 9. Get Reservations by Property ID (Token Required)
-GET http://localhost:8080/api/reservations/property/1
-Authorization: Bearer {{auth_token}}
-
-### 10. Get User's Own Reservations (Token Required)
-GET http://localhost:8080/api/reservations/user?email=john@example.com
-Authorization: Bearer {{auth_token}}
-
-### 11. Update Reservation (Token Required)
-PUT http://localhost:8080/api/reservations/1
-Authorization: Bearer {{auth_token}}
+### 5. Create Property Test - Invalid Token
+POST http://localhost:8080/api/properties
+Authorization: Bearer invalid_token_here
 Content-Type: application/json
 
 {
-  "firstName": "John Updated",
-  "lastName": "Doe Updated",
-  "startTime": "2025-10-02T15:00:00",
-  "endTime": "2025-10-04T11:00:00",
-  "totalPrice": 600.0,
-  "notes": "Updated reservation"
+  "name": "Test Villa",
+  "description": "This should fail",
+  "totalVillas": 1,
+  "size": 100,
+  "bedNum": 2,
+  "wcNum": 1,
+  "personCapacity": 4,
+  "locationName": "Test Location",
+  "nightlyRate": 200.00
 }
 
-### 12. Cancel Reservation (Token Required)
-PATCH http://localhost:8080/api/reservations/1/cancel
-Authorization: Bearer {{auth_token}}
+### 6. Create Property Test - Missing Required Fields
+POST http://localhost:8080/api/properties
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huQGV4YW1wbGUuY29tIiwidXNlcklkIjoxLCJmaXJzdE5hbWUiOiJKb2huIiwiaWF0IjoxNzU4OTg4ODU3LCJleHAiOjE3NTkwNzUyNTd9.gQYnICRPlo1HqYtIYBj-Xf4xmBrzJjEKxeIS1ecTMAVSFpmwniziWM8wc0N0146B
+Content-Type: application/json
 
-### 13. Confirm Reservation (Token Required)
-PATCH http://localhost:8080/api/reservations/1/confirm
-Authorization: Bearer {{auth_token}}
-
-### 14. Check Availability (Token Required)
-GET http://localhost:8080/api/reservations/availability?propertyId=1&startDate=2025-10-01T15:00:00&endDate=2025-10-03T11:00:00
-Authorization: Bearer {{auth_token}}
-
-### 15. Delete Reservation (Token Required)
-DELETE http://localhost:8080/api/reservations/1
-Authorization: Bearer {{auth_token}}
+{
+  "name": "Incomplete Villa",
+  "description": "Missing required fields"
+}

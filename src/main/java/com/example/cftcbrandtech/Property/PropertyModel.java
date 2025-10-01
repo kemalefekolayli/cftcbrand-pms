@@ -1,7 +1,6 @@
 package com.example.cftcbrandtech.Property;
 
 import com.example.cftcbrandtech.Property.LocationModel.LocationInfo;
-import com.example.cftcbrandtech.Property.PropertyInfo.PropertyInfo;
 import com.example.cftcbrandtech.Property.PropertyPaymentInfo.PropertyPaymentInfo;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,15 +25,14 @@ public class PropertyModel {
     @Column(name = "total_villas", nullable = false)
     private Integer totalVillas = 1;
 
-    @ManyToOne
-    @JoinColumn(name = "property_info_id")
-    private PropertyInfo propertyInfo;
+    @Column(name = "villa_type")
+    private String villaType;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private LocationInfo location;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "property_payment_info_id")
     private PropertyPaymentInfo propertyPaymentInfo;
 
