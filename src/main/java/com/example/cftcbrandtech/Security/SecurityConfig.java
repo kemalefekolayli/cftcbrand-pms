@@ -21,7 +21,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/**").permitAll()
-                        .requestMatchers("/api/properties/**").permitAll()  // Bunu ekle
+                        .requestMatchers("/api/properties/**").permitAll()
+                        .requestMatchers("/api/reservations/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
