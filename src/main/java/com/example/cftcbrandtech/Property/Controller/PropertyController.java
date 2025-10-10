@@ -1,16 +1,16 @@
 package com.example.cftcbrandtech.Property.Controller;
 
-import com.example.cftcbrandtech.Exceptions.ErrorCodes;
-import com.example.cftcbrandtech.Exceptions.GlobalException;
 import com.example.cftcbrandtech.Property.Dto.PropertyCreateDto;
 import com.example.cftcbrandtech.Property.PropertyModel;
 import com.example.cftcbrandtech.Property.Service.PropertyService;
 import com.example.cftcbrandtech.Security.JwtHelper;
-import com.example.cftcbrandtech.User.UserModel;
+import com.example.cftcbrandtech.User.Dto.SupabaseUserInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/properties")
@@ -21,26 +21,26 @@ public class PropertyController {
     private final JwtHelper jwtHelper;
 
     @PostMapping
-    public ResponseEntity<PropertyModel> createProperty(@RequestHeader("Authorization") String token, @Valid @RequestBody PropertyCreateDto dto) {
-        UserModel currentUser = jwtHelper.getUserFromToken(token.substring(7));
-
-        if (currentUser == null) {
-            throw new GlobalException(ErrorCodes.AUTH_TOKEN_INVALID);
-        }
+    public ResponseEntity<Map<String, Object>> createProperty(@Valid @RequestBody PropertyCreateDto dto) {
+        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
 
         PropertyModel property = propertyService.createProperty(dto);
-        return ResponseEntity.ok(property);
-    } // should not return this fix it
+
+        return ResponseEntity.ok(Map.of(
+                "property", property,
+                "createdBy", currentUser.getEmail()
+        ));
+    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProperty(@RequestHeader("Authorization") String token, @PathVariable Long id) {
-        UserModel currentUser = jwtHelper.getUserFromToken(token.substring(7));
-
-        if (currentUser == null) {
-            throw new GlobalException(ErrorCodes.AUTH_TOKEN_INVALID);
-        }
+    public ResponseEntity<Map<String, String>> deleteProperty(@PathVariable Long id) {
+        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
 
         propertyService.deleteProperty(id);
-        return ResponseEntity.ok("Property deleted successfully");
+
+        return ResponseEntity.ok(Map.of(
+                "message", "Property deleted successfully",
+                "deletedBy", currentUser.getEmail()
+        ));
     }
 }

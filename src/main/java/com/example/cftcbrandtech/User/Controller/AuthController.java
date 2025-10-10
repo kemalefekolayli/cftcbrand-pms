@@ -1,37 +1,24 @@
 package com.example.cftcbrandtech.User.Controller;
 
-import com.example.cftcbrandtech.Security.JwtHelper;
 import com.example.cftcbrandtech.User.Dto.LoginRequest;
-import com.example.cftcbrandtech.User.Dto.UserLoginDto;
-import com.example.cftcbrandtech.User.Dto.UserRegisDto;
-import com.example.cftcbrandtech.User.Service.UserModelService;
-import com.example.cftcbrandtech.User.UserModel;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
 @AllArgsConstructor
 public class AuthController {
 
-    private final UserModelService userModelService;
-
-    private final JwtHelper jwtHelper; // we gonna eventually remove the token creation logic from this class else where
-
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisDto dto) {
-
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -43,9 +30,15 @@ public class AuthController {
                     {
                       "email": "%s",
                       "password": "%s",
-                      "email_confirm": true
+                      "email_confirm": true,
+                      "user_metadata": {
+                        "firstName": "%s",
+                        "lastName": "%s",
+                        "phoneNumber": "%s"
+                      }
                     }
-                """.formatted(dto.getEmail(), dto.getPassword())))
+                """.formatted(dto.getEmail(), dto.getPassword(),
+                            dto.getFirstName(), dto.getLastName(), dto.getPhoneNumber())))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -54,12 +47,13 @@ public class AuthController {
                 return ResponseEntity.status(response.statusCode())
                         .body("Supabase user creation failed: " + response.body());
             }
-            return ResponseEntity.ok("User created via Supabase");
+
+            return ResponseEntity.ok("User created successfully in Supabase");
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -67,7 +61,6 @@ public class AuthController {
             String supabaseUrl = System.getenv("SUPABASE_URL");
             String serviceRoleKey = System.getenv("SUPABASE_SERVICE_ROLE_KEY");
 
-            // Prepare Supabase Auth login request
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(supabaseUrl + "/auth/v1/token?grant_type=password"))
@@ -85,6 +78,7 @@ public class AuthController {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
+                // Response içinde access_token ve user bilgileri var
                 return ResponseEntity.ok(response.body());
             } else {
                 return ResponseEntity.status(response.statusCode())
@@ -92,8 +86,7 @@ public class AuthController {
             }
 
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
 }

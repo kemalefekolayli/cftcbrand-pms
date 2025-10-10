@@ -1,0 +1,38 @@
+### 1. Register
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+  "firstName": "Ahmet",
+  "lastName": "Yılmaz",
+  "email": "ahmet@example.com",
+  "phoneNumber": "5551234567",
+  "password": "SecurePass123!"
+}
+
+### 2. Login
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "email": "ahmet@example.com",
+  "password": "SecurePass123!"
+}
+
+### 3. Get My Profile (JWT'den)
+GET http://localhost:8080/api/users/me
+Authorization: Bearer {{token}}
+
+### 4. Create Property
+POST http://localhost:8080/api/properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Villa Antalya",
+  "description": "Güzel villa",
+  "totalVillas": 3,
+  "villaType": "Luxury",
+  "locationName": "Belek",
+  "nightlyRate": 500.00
+}
