@@ -16,13 +16,14 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class JwtHelper implements Converter<Jwt, AbstractAuthenticationToken> {
+public class JwtHelper implements Converter<Jwt, Collection<GrantedAuthority>> {
 
+    /**
+     * Convert JWT to Spring Security authorities
+     */
     @Override
-    public AbstractAuthenticationToken convert(Jwt jwt) {
-        String email = jwt.getClaim("email");
+    public Collection<GrantedAuthority> convert(Jwt jwt) {
         String role = jwt.getClaim("role");
-
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         if (role != null) {
@@ -31,9 +32,12 @@ public class JwtHelper implements Converter<Jwt, AbstractAuthenticationToken> {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
 
-        return new JwtAuthenticationToken(jwt, authorities, email);
+        return authorities;
     }
 
+    /**
+     * Extract Supabase user info from current JWT token
+     */
     public SupabaseUserInfo getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -52,14 +56,23 @@ public class JwtHelper implements Converter<Jwt, AbstractAuthenticationToken> {
         throw new GlobalException(ErrorCodes.AUTH_TOKEN_INVALID);
     }
 
+    /**
+     * Get just the Supabase user ID from token
+     */
     public String getCurrentUserId() {
         return getCurrentUser().getUserId();
     }
 
+    /**
+     * Get user email from token
+     */
     public String getCurrentUserEmail() {
         return getCurrentUser().getEmail();
     }
 
+    /**
+     * Check if current user has specific role
+     */
     public boolean hasRole(String role) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {

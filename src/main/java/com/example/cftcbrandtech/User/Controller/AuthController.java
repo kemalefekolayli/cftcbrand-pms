@@ -1,6 +1,7 @@
 package com.example.cftcbrandtech.User.Controller;
 
 import com.example.cftcbrandtech.User.Dto.LoginRequest;
+import com.example.cftcbrandtech.User.Dto.UserRegisDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
