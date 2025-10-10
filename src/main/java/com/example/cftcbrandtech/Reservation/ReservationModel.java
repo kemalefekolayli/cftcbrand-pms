@@ -49,7 +49,7 @@ public class ReservationModel {
     @Column(name = "total_price")
     private Double totalPrice;
 
-    @Column(name = "notes", columnDefinition = "TEXT")
+    @Column(name = "notes", columnDefinition = "TEXT")  
     private String notes;
 
     @Column(nullable = false, updatable = false, name = "created_at")
