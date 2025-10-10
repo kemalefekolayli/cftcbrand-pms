@@ -36,24 +36,8 @@ public class UserController {
         return ResponseEntity.ok(userList);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@RequestHeader("Authorization") String token, @RequestBody UpdateUserDto dto, @PathVariable Long id) {
-        UserModel currentUser = jwtHelper.getUserFromToken(token.substring(7));
-        if(!currentUser.getId().equals(id)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only update your own profile");
-        }
-        userModelService.UpdateUser(dto, id);
-        return ResponseEntity.ok("User updated successfully");
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@RequestHeader("Authorization") String token, @PathVariable Long id) {
-        UserModel currentUser = jwtHelper.getUserFromToken(token.substring(7));
-        if(!currentUser.getId().equals(id)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own profile");
-        }
-        userModelService.DeleteUser(id);
-        return ResponseEntity.ok("User deleted successfully");
-    }
+
+
 
 }

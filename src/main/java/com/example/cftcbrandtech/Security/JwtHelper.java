@@ -1,52 +1,26 @@
 package com.example.cftcbrandtech.Security;
 
-import com.example.cftcbrandtech.User.Repository.UserModelRepository;
-import com.example.cftcbrandtech.User.UserModel;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import java.time.Instant;
-import java.util.Date;
+import java.util.*;
 
 @Component
-@RequiredArgsConstructor
-public class JwtHelper {
+public class JwtHelper implements Converter<Jwt, AbstractAuthenticationToken> {
 
-    private final UserModelRepository userModelRepository;
-    private final String SECRET_KEY = "mySecretKeyForJWTTokenGenerationThatShouldBeAtLeast256Bits"; // cant store this here will move it to somwhere else
+    @Override
+    public AbstractAuthenticationToken convert(Jwt jwt) {
+        String userId = jwt.getSubject();
+        String email = jwt.getClaim("email");
 
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-    }
+        Collection<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
-    // Token generate et
-    public String generateToken(UserModel user) {
-        return Jwts.builder()
-                .subject(user.getEmail())
-                .claim("userId", user.getId())
-                .claim("firstName", user.getFirstName())
-                .issuedAt(Date.from(Instant.now()))
-                .expiration(Date.from(Instant.now().plusSeconds(86400))) // 24 saat
-                .signWith(getSigningKey())
-                .compact();
-    }
-
-    // Token'dan user email çıkar
-    public String getEmailFromToken(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
-    }
-
-    // Token'dan user bul
-    public UserModel getUserFromToken(String token) {
-        String email = getEmailFromToken(token);
-        return userModelRepository.findByEmail(email).orElse(null);
+        return new JwtAuthenticationToken(jwt, authorities, email);
     }
 }

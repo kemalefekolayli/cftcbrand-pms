@@ -1,13 +1,13 @@
-@token = eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2huMkBleGFtcGxlLmNvbSIsInVzZXJJZCI6MSwiZmlyc3ROYW1lIjoiSm9objIiLCJpYXQiOjE3NTkyNDQ5NTcsImV4cCI6MTc1OTMzMTM1N30.oK5-u61tBj68SgOB_JySGbu1BM2pq_E5UdrAAq_ru0CzOPI36fwOrJKuQpAVdJL7
-
+@token = eyJhbGciOiJIUzI1NiIsImtpZCI6IjhyZmFLTklRdHhNS2RFcnAiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3ZocWRxYWVxcXVjb2JkbHp4aHRwLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI1ZWViMjhkZi01M2RiLTQ3ZDktODNkMy1iY2MxNTUxMGUwMmIiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzYwMTExMjQzLCJpYXQiOjE3NjAxMDc2NDMsImVtYWlsIjoiam9objIzQGV4YW1wbGUuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbF92ZXJpZmllZCI6dHJ1ZX0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NjAxMDc2NDN9XSwic2Vzc2lvbl9pZCI6IjdmNTgzMTQ2LTUxOTItNDZjNi1iODFmLWRjYzhiNGM4ZTI5MiIsImlzX2Fub255bW91cyI6ZmFsc2V9.zD6NgT_xpMIcS8NW3j1LS8iv2GzbmGGF5IFpbDuGDj4
+@refresh_token = oufrtd5jm4k5
 ### 1. User Registration Test
 POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
-  "firstName": "John2",
+  "firstName": "John232",
   "lastName": "Doe",
-  "email": "john2@example.com",
+  "email": "john23@example.com",
   "phoneNumber": "1234567890",
   "password": "password123"
 }
@@ -17,7 +17,7 @@ POST http://localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-  "email": "john2@example.com",
+  "email": "john23@example.com",
   "password": "password123"
 }
 

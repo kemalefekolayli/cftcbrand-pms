@@ -18,6 +18,10 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class UserModel {
 
+
+    @Column(nullable = false, unique = true, length = 64)
+    private String supabaseId;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,13 +35,6 @@ public class UserModel {
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(nullable = false, length = 255) // TODO: FOR NOW WE WILL HAVE A PASSWORD BUT EVENTUALLY WE WILL MOVE TO A PASSWORDLESS ENVIROMENT
-    private String password;
-
-
-    @Column(nullable = false, length = 255)
-    @Pattern(regexp = "^[0-9]{10,11}$", message = "Phone number should be 10-11 digits")
-    private String phoneNumber;
 
     @Column(nullable = false, updatable = false, name = "created_at")
     @CreationTimestamp

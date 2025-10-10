@@ -11,9 +11,7 @@ public class UserModelMapper {
         UserModel userModel = new UserModel();
         userModel.setFirstName(dto.getFirstName());
         userModel.setEmail(dto.getEmail());
-        userModel.setPassword(dto.getPassword());
         userModel.setLastName(dto.getLastName());
-        userModel.setPhoneNumber(dto.getPhoneNumber());
         return userModel;
     }
 
