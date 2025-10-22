@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "firstName": "Ahmet",
   "lastName": "Yılmaz",
-  "email": "ahmet@example.com",
+  "email": "ahmet12@example.com",
   "phoneNumber": "5551234567",
   "password": "SecurePass123!"
 }
@@ -17,7 +17,7 @@ POST http://localhost:8080/api/users/login
 Content-Type: application/json
 
 {
-  "email": "ahmet@example.com",
+  "email": "ahmet12@example.com",
   "password": "SecurePass123!"
 }
 
