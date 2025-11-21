@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Environment Variables ###
+.env
+.env.*
+variables.env
+*.env
+
+### Sensitive Files ###
+**/application-local.properties
+**/application-dev.properties

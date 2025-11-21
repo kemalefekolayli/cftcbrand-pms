@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class JwtHelper implements Converter<Jwt, Collection<GrantedAuthority>> {
+public class    JwtHelper implements Converter<Jwt, Collection<GrantedAuthority>> {
 
     /**
      * Convert JWT to Spring Security authorities

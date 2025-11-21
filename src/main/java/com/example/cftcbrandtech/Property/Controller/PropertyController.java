@@ -21,7 +21,7 @@ public class PropertyController {
     private final JwtHelper jwtHelper;
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createProperty(@Valid @RequestBody PropertyCreateDto dto) {
+    public ResponseEntity<Map<String, Object>> createProperty(@Valid @RequestBody PropertyCreateDto dto) { // olm biz burda token alıyo muyuz amk wtf
         SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
 
         PropertyModel property = propertyService.createProperty(dto);

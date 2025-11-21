@@ -15,6 +15,7 @@ public class PropertyMapper {
         property.setDescription(dto.getDescription());
         property.setTotalVillas(dto.getTotalVillas());
         property.setCreatedAt(LocalDateTime.now());
+        property.setVillaType(dto.getVillaType());
         property.setUpdatedAt(LocalDateTime.now());
         return property;
     }
