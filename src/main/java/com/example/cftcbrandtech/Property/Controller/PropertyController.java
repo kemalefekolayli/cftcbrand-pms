@@ -4,7 +4,7 @@ import com.example.cftcbrandtech.Property.Dto.PropertyCreateDto;
 import com.example.cftcbrandtech.Property.PropertyModel;
 import com.example.cftcbrandtech.Property.Service.PropertyService;
 import com.example.cftcbrandtech.Security.JwtHelper;
-import com.example.cftcbrandtech.User.Dto.SupabaseUserInfo;
+import com.example.cftcbrandtech.User.Dto.UserProfileDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class PropertyController {
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> createProperty(@Valid @RequestBody PropertyCreateDto dto) { // olm biz burda token alıyo muyuz amk wtf
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
+        UserProfileDto currentUser = jwtHelper.getCurrentUser();
 
         PropertyModel property = propertyService.createProperty(dto);
 
@@ -34,7 +34,7 @@ public class PropertyController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteProperty(@PathVariable Long id) {
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
+        UserProfileDto currentUser = jwtHelper.getCurrentUser();
 
         propertyService.deleteProperty(id);
 
