@@ -3,7 +3,7 @@ package com.example.cftcbrandtech.Availabilty;
 import com.example.cftcbrandtech.Exceptions.ErrorCodes;
 import com.example.cftcbrandtech.Exceptions.GlobalException;
 import com.example.cftcbrandtech.Security.JwtHelper;
-import com.example.cftcbrandtech.User.Dto.SupabaseUserInfo;
+import com.example.cftcbrandtech.User.Dto.UserProfileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +29,6 @@ public class AvailabilityController {
             @RequestParam int year,
             @RequestParam int month) {
 
-        // Token kontrolü - Security context'te yoksa exception fırlatır
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
-
         // Validate month
         if (month < 1 || month > 12) {
             throw new GlobalException(ErrorCodes.VALIDATION_ERROR);
@@ -52,7 +49,7 @@ public class AvailabilityController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
 
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
+        UserProfileDto currentUser = jwtHelper.getCurrentUser();
 
         boolean isAvailable = availabilityService.isAvailable(propertyId, startTime, endTime);
         int availableVillas = availabilityService.getAvailableVillaCount(propertyId, startTime, endTime);
@@ -75,8 +72,6 @@ public class AvailabilityController {
             @PathVariable Long propertyId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
-
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
 
         int availableVillas = availabilityService.getAvailableVillaCount(propertyId, startTime, endTime);
 

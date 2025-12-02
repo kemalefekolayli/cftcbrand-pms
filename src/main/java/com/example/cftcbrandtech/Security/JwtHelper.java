@@ -2,83 +2,58 @@ package com.example.cftcbrandtech.Security;
 
 import com.example.cftcbrandtech.Exceptions.ErrorCodes;
 import com.example.cftcbrandtech.Exceptions.GlobalException;
-import com.example.cftcbrandtech.User.Dto.SupabaseUserInfo;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.oauth2.jwt.Jwt;
+import com.example.cftcbrandtech.User.Dto.UserProfileDto;
+import com.example.cftcbrandtech.User.Service.UserService;
+import com.example.cftcbrandtech.User.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Collection;
 
 @Component
-public class    JwtHelper implements Converter<Jwt, Collection<GrantedAuthority>> {
+@RequiredArgsConstructor
+public class JwtHelper {
 
-    /**
-     * Convert JWT to Spring Security authorities
-     */
-    @Override
-    public Collection<GrantedAuthority> convert(Jwt jwt) {
-        String role = jwt.getClaim("role");
+    private final UserService userService;
 
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        if (role != null) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-
-        return authorities;
-    }
-
-    /**
-     * Extract Supabase user info from current JWT token
-     */
-    public SupabaseUserInfo getCurrentUser() {
+    public UserProfileDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication instanceof JwtAuthenticationToken jwtAuth) {
-            Jwt jwt = jwtAuth.getToken();
-
-            return SupabaseUserInfo.builder()
-                    .userId(jwt.getSubject())
-                    .email(jwt.getClaim("email"))
-                    .role(jwt.getClaim("role"))
-                    .userMetadata(jwt.getClaim("user_metadata"))
-                    .appMetadata(jwt.getClaim("app_metadata"))
-                    .build();
+        if (authentication != null && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User userDetails) {
+            UserEntity user = userService.getByEmail(userDetails.getUsername());
+            return toProfile(user);
         }
-
         throw new GlobalException(ErrorCodes.AUTH_TOKEN_INVALID);
     }
 
-    /**
-     * Get just the Supabase user ID from token
-     */
-    public String getCurrentUserId() {
-        return getCurrentUser().getUserId();
+    public Long getCurrentUserId() {
+        return getCurrentUser().getId();
     }
 
-    /**
-     * Get user email from token
-     */
     public String getCurrentUserEmail() {
         return getCurrentUser().getEmail();
     }
 
-    /**
-     * Check if current user has specific role
-     */
     public boolean hasRole(String role) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return false;
         }
-        return authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_" + role.toUpperCase()));
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        return authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_" + role.toUpperCase()));
+    }
+
+    private UserProfileDto toProfile(UserEntity user) {
+        return UserProfileDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole())
+                .build();
     }
 }

@@ -7,7 +7,7 @@ import com.example.cftcbrandtech.Reservation.Mapper.ReservationModelMapper;
 import com.example.cftcbrandtech.Reservation.ReservationModel;
 import com.example.cftcbrandtech.Reservation.Service.ReservationService;
 import com.example.cftcbrandtech.Security.JwtHelper;
-import com.example.cftcbrandtech.User.Dto.SupabaseUserInfo;
+import com.example.cftcbrandtech.User.Dto.UserProfileDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,8 +30,6 @@ public class ReservationController {
     public ResponseEntity<ReservationResponseDto> createReservation(
             @Valid @RequestBody CreateReservationDto dto) {
 
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
-
         ReservationModel reservation = reservationService.createReservation(dto);
         ReservationResponseDto response = reservationModelMapper.toResponseDto(reservation);
 
@@ -40,8 +38,6 @@ public class ReservationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ReservationResponseDto> getReservationById(@PathVariable Long id) {
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
-
         ReservationModel reservation = reservationService.getReservationById(id);
         ReservationResponseDto response = reservationModelMapper.toResponseDto(reservation);
 
@@ -50,8 +46,6 @@ public class ReservationController {
 
     @GetMapping
     public ResponseEntity<List<ReservationResponseDto>> getAllReservations() {
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
-
         List<ReservationModel> reservations = reservationService.getAllReservations();
         List<ReservationResponseDto> response = reservations.stream()
                 .map(reservationModelMapper::toResponseDto)
@@ -63,8 +57,6 @@ public class ReservationController {
     @GetMapping("/property/{propertyId}")
     public ResponseEntity<List<ReservationResponseDto>> getReservationsByProperty(
             @PathVariable Long propertyId) {
-
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
 
         List<ReservationModel> reservations = reservationService.getReservationsByProperty(propertyId);
         List<ReservationResponseDto> response = reservations.stream()
@@ -79,8 +71,6 @@ public class ReservationController {
             @PathVariable Long id,
             @Valid @RequestBody UpdateReservationDto dto) {
 
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
-
         ReservationModel reservation = reservationService.updateReservation(id, dto);
         ReservationResponseDto response = reservationModelMapper.toResponseDto(reservation);
 
@@ -89,7 +79,7 @@ public class ReservationController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> cancelReservation(@PathVariable Long id) {
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
+        UserProfileDto currentUser = jwtHelper.getCurrentUser();
 
         reservationService.cancelReservation(id);
         return ResponseEntity.ok("Reservation cancelled by " + currentUser.getEmail());

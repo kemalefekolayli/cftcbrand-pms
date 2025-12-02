@@ -1,14 +1,14 @@
 package com.example.cftcbrandtech.User.Controller;
 
 import com.example.cftcbrandtech.Security.JwtHelper;
-import com.example.cftcbrandtech.User.Dto.SupabaseUserInfo;
-import lombok.AllArgsConstructor;
+import com.example.cftcbrandtech.User.Dto.UserProfileDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 
     private final JwtHelper jwtHelper;
@@ -17,8 +17,8 @@ public class UserController {
      * Get current user profile from JWT token
      */
     @GetMapping("/me")
-    public ResponseEntity<SupabaseUserInfo> getCurrentUserProfile() {
-        SupabaseUserInfo currentUser = jwtHelper.getCurrentUser();
+    public ResponseEntity<UserProfileDto> getCurrentUserProfile() {
+        UserProfileDto currentUser = jwtHelper.getCurrentUser();
         return ResponseEntity.ok(currentUser);
     }
 

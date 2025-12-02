@@ -25,7 +25,6 @@ public class UserRegisDto {
     @Pattern(regexp = "^[0-9]{10,11}$", message = "Phone number should be 10-11 digits")
     private String phoneNumber;
 
-    // Password - ONLY used to send to Supabase, NEVER stored in our database
     @NotEmpty(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")
     @Pattern(
