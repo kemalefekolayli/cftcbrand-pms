@@ -6,6 +6,7 @@ import com.example.cftcbrandtech.User.Dto.UserProfileDto;
 import com.example.cftcbrandtech.User.Service.UserService;
 import com.example.cftcbrandtech.User.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class JwtHelper {
 
+    @Lazy
     private final UserService userService;
 
     public UserProfileDto getCurrentUser() {
