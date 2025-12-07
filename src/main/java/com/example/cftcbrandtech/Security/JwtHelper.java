@@ -3,10 +3,7 @@ package com.example.cftcbrandtech.Security;
 import com.example.cftcbrandtech.Exceptions.ErrorCodes;
 import com.example.cftcbrandtech.Exceptions.GlobalException;
 import com.example.cftcbrandtech.User.Dto.UserProfileDto;
-import com.example.cftcbrandtech.User.Service.UserService;
-import com.example.cftcbrandtech.User.UserEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +15,6 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class JwtHelper {
 
-    @Lazy
-    private final UserService userService;
 
     public UserProfileDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,6 +39,7 @@ public class JwtHelper {
         }
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        return authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_" + role.toUpperCase()));
+        return authorities.stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_" + role.toUpperCase()));
     }
 }
