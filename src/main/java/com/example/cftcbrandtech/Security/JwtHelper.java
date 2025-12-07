@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 
 @Component
-@RequiredArgsConstructor
 public class JwtHelper {
 
     @Lazy
@@ -23,9 +22,8 @@ public class JwtHelper {
 
     public UserProfileDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User userDetails) {
-            UserEntity user = userService.getByEmail(userDetails.getUsername());
-            return toProfile(user);
+        if (authentication != null && authentication.getPrincipal() instanceof UserProfileDto userProfile) {
+            return userProfile;
         }
         throw new GlobalException(ErrorCodes.AUTH_TOKEN_INVALID);
     }
@@ -46,16 +44,5 @@ public class JwtHelper {
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         return authorities.stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_" + role.toUpperCase()));
-    }
-
-    private UserProfileDto toProfile(UserEntity user) {
-        return UserProfileDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
-                .role(user.getRole())
-                .build();
     }
 }
