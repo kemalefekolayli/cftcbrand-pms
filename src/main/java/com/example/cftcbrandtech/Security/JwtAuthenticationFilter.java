@@ -5,15 +5,18 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.context.annotation.Lazy;
+import com.example.cftcbrandtech.User.Dto.UserProfileDto;
+import com.example.cftcbrandtech.User.UserEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -21,8 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserService userService;
 
-    // FIXED: Added @Lazy annotation and explicit constructor to break circular dependency
-    public JwtAuthenticationFilter(JwtService jwtService, @Lazy UserService userService) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
         this.jwtService = jwtService;
         this.userService = userService;
     }
@@ -44,13 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = jwtService.extractUsername(token);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.loadUserByUsername(username);
+            UserEntity user = userService.getByEmail(username);
 
-            if (jwtService.isTokenValid(token, userDetails.getUsername())) {
+            if (jwtService.isTokenValid(token, user.getEmail())) {
+                UserProfileDto profile = userService.toProfile(user);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        profile,
                         null,
-                        userDetails.getAuthorities()
+                        ProfileAuthorities.forRole(profile.getRole())
                 );
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -58,5 +61,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private static class ProfileAuthorities {
+        private static final String ROLE_PREFIX = "ROLE_";
+
+        static List<SimpleGrantedAuthority> forRole(String role) {
+            if (role == null || role.isBlank()) {
+                return Collections.emptyList();
+            }
+            return List.of(new SimpleGrantedAuthority(ROLE_PREFIX + role.toUpperCase()));
+        }
     }
 }
