@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # 1. Servis: PostgreSQL Veritabanı
+  db:
+    image: postgres:15
+    container_name: local_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tourdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Servis: Spring Boot Backend
+  app:
+    build: .
+    container_name: local_backend
+    ports:
+      - "8080:8080"
+    environment:
+      # application.properties içindeki değişkenleri eziyoruz
+      - PGHOST=db         # 'db' servisine bağlan (localhost değil)
+      - PGPORT=5432
+      - PGDATABASE=tourdb
+      - PGUSER=postgres
+      - PGPASSWORD=postgres
+      - SERVER_PORT=8080
+    depends_on:
+      db:
+        condition: service_healthy # DB tamamen hazır olana kadar bekle
+
+volumes:
+  postgres_data:

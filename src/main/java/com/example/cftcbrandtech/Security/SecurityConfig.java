@@ -34,6 +34,8 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/register", "/api/users/login").permitAll()
+                        .requestMatchers("/api/reservations/property/**").permitAll()  // ← EKLE
+                        .requestMatchers("/api/availability/**").permitAll()           // ← EKLE
                         .requestMatchers("/actuator/health", "/health").permitAll()
                         .anyRequest().authenticated()
                 )
